@@ -207,21 +207,6 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Filters */}
-        <Card>
-          <CardContent className="p-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-            <FilterSelect label="Status" value={filters.status} onChange={(v) => setFilters((f) => ({ ...f, status: v as Status | "all" }))}
-              options={[["all", "Todos"], ...STATUSES.map((s) => [s, STATUS_LABEL[s]] as [string, string])]} />
-            <FilterSelect label="Prioridade" value={filters.prioridade} onChange={(v) => setFilters((f) => ({ ...f, prioridade: v }))}
-              options={[["all", "Todas"], ...PRIORITIES.map((p) => [p, PRIORITY_LABEL[p]] as [string, string])]} />
-            <FilterSelect label="Impacto" value={filters.impacto} onChange={(v) => setFilters((f) => ({ ...f, impacto: v }))}
-              options={[["all", "Todos"], ...IMPACTS.map((i) => [i, IMPACT_LABEL[i]] as [string, string])]} />
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-muted-foreground">Responsável</label>
-              <Input value={filters.responsavel} onChange={(e) => setFilters((f) => ({ ...f, responsavel: e.target.value }))} placeholder="Buscar..." />
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Areas — blocos empilhados (Elétrica, Térmica, ETA) — destaque principal */}
         <div className="space-y-6">
