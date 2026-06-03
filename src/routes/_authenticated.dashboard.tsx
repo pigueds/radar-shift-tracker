@@ -208,7 +208,8 @@ function Dashboard() {
               {format(parseISO(date), "EEEE, dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <ResumoDialog date={date} tasks={[...own, ...herdadas]} isAfterPrazo={isAfterPrazo} />
             <ReportButtons date={date} tasks={own} herdadas={herdadas} stats={stats} />
             {canManage && (
               <TaskFormDialog
