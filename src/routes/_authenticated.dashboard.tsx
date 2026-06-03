@@ -344,6 +344,7 @@ function Dashboard() {
             task_date: editTask.task_date,
           }}
           onSubmit={async (v) => {
+            if (!editTask) return;
             await updateMut.mutateAsync({ id: editTask.id, ...v });
             setEditTask(null);
           }}
