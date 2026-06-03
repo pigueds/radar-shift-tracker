@@ -221,48 +221,45 @@ function Dashboard() {
         </div>
 
 
-        {/* Areas — blocos empilhados (Elétrica, Térmica, ETA) — destaque principal */}
+        {/* Areas — blocos empilhados (Térmica, Elétrica, ETA) — destaque principal */}
         <div className="space-y-6">
           {visibleAreas.map((a) => (
-            <section key={a} aria-label={AREA_LABEL[a]} className="space-y-3">
-              <div className="flex items-center gap-3 border-b pb-2">
-                <div className="h-8 w-1.5 rounded-full bg-primary" aria-hidden />
+            <section key={a} aria-label={AREA_LABEL[a]} className="space-y-2">
+              <div className={`flex items-center gap-3 border-l-4 rounded-md px-4 py-2.5 ${AREA_HEADER_CLASS[a]}`}>
                 <h2 className="text-xl font-bold tracking-tight">{AREA_LABEL[a]}</h2>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm opacity-80">
                   ({byArea[a].length} {byArea[a].length === 1 ? "tarefa" : "tarefas"})
                 </span>
               </div>
               {byArea[a].length === 0 ? (
-                <div className="text-center text-sm text-muted-foreground py-8 border rounded-lg border-dashed">
+                <div className="text-center text-sm text-muted-foreground py-6 border rounded-lg border-dashed">
                   Nenhuma tarefa nesta área.
                 </div>
               ) : (
-                <ol className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 list-none">
+                <ol className="border rounded-lg overflow-hidden bg-card divide-y-0">
                   {byArea[a].map(({ task, herdada }, idx) => (
-                    <li key={task.id} className="relative">
-                      <span className="absolute -left-1 -top-1 z-10 h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shadow">
-                        {idx + 1}
-                      </span>
-                      <TaskCard
-                        task={task}
-                        isHerdada={herdada}
-                        canEdit={canManage}
-                        canChangeStatus={canChangeStatus(task)}
-                        isVencidaVisual={
-                          isAfterPrazo && task.task_date === todayISO() &&
-                          (task.status === "pendente" || task.status === "em_andamento")
-                        }
-                        onChangeStatus={(s) => onChangeStatus(task, s)}
-                        onEdit={() => openEditDialog(task)}
-                        onDelete={() => { if (confirm("Excluir esta tarefa?")) deleteMut.mutate(task.id); }}
-                      />
-                    </li>
+                    <TaskRow
+                      key={task.id}
+                      index={idx + 1}
+                      task={task}
+                      isHerdada={herdada}
+                      canEdit={canManage}
+                      canChangeStatus={canChangeStatus(task)}
+                      isVencidaVisual={
+                        isAfterPrazo && task.task_date === todayISO() &&
+                        (task.status === "pendente" || task.status === "em_andamento")
+                      }
+                      onChangeStatus={(s: Status) => onChangeStatus(task, s)}
+                      onEdit={() => openEditDialog(task)}
+                      onDelete={() => { if (confirm("Excluir esta tarefa?")) deleteMut.mutate(task.id); }}
+                    />
                   ))}
                 </ol>
               )}
             </section>
           ))}
         </div>
+
 
         {/* Resumo do dia — discreto, ao final */}
         <section className="pt-6 mt-4 border-t space-y-3">
