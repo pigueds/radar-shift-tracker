@@ -173,6 +173,11 @@ function Dashboard() {
             <div className="flex items-center gap-1 px-3 py-1.5 rounded-md bg-sidebar-accent text-sidebar-accent-foreground text-xs">
               <Clock className="h-3.5 w-3.5" /> Prazo do turno: {PRAZO_TURNO}
             </div>
+            {isAdmin && (
+              <Button variant="ghost" size="sm" asChild className="text-sidebar-foreground hover:bg-sidebar-accent">
+                <Link to="/usuarios"><Users className="h-4 w-4 mr-1" />Usuários</Link>
+              </Button>
+            )}
             <Button variant="ghost" size="sm" onClick={logout} className="text-sidebar-foreground hover:bg-sidebar-accent">
               <LogOut className="h-4 w-4 mr-1" /> Sair
             </Button>
