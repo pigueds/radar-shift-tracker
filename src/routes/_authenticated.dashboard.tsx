@@ -27,9 +27,9 @@ import { ReportButtons } from "@/components/radar/ReportButtons";
 import { ResumoDialog } from "@/components/radar/ResumoDialog";
 
 const AREA_HEADER_CLASS: Record<Area, string> = {
-  termica: "bg-destructive/15 border-l-destructive text-destructive",
-  eletrica: "bg-warning/20 border-l-warning text-warning-foreground",
-  eta: "bg-info/15 border-l-info text-info",
+  termica: "bg-primary/10 border-l-primary text-primary",
+  eletrica: "bg-primary/10 border-l-primary text-primary",
+  eta: "bg-primary/10 border-l-primary text-primary",
 };
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
