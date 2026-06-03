@@ -218,7 +218,7 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             <ReportButtons date={date} tasks={own} herdadas={herdadas} stats={stats} />
-            {isAdmin && (
+            {canManage && (
               <TaskFormDialog
                 trigger={<Button><Plus className="h-4 w-4 mr-1" />Nova tarefa</Button>}
                 defaultDate={date}
@@ -227,36 +227,6 @@ function Dashboard() {
             )}
           </div>
         </div>
-
-        {/* Indicators */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-          <Indicator label="Total" value={stats.total} />
-          <Indicator label="Pendentes" value={stats.pendentes} />
-          <Indicator label="Em andamento" value={stats.emAndamento} accent="info" />
-          <Indicator label="Concluídas" value={stats.concluidas} accent="success" />
-          <Indicator label="Não concluídas" value={stats.naoConcluidas} accent="warning" />
-          <Indicator label="Vencidas" value={stats.vencidas} accent="destructive" />
-        </div>
-
-        {/* Semaphore */}
-        <Card>
-          <CardContent className="p-4 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className={`h-12 w-12 rounded-full ${semaClass} flex items-center justify-center font-bold`}>
-                {stats.pct}%
-              </div>
-              <div>
-                <p className="text-sm font-medium">Semáforo do dia</p>
-                <p className="text-xs text-muted-foreground">
-                  {sema === "success" ? "100% concluído" : sema === "warning" ? "Entre 80% e 99%" : "Abaixo de 80%"}
-                </p>
-              </div>
-            </div>
-            <div className="flex-1 max-w-md h-3 bg-muted rounded-full overflow-hidden">
-              <div className={`h-full ${semaClass}`} style={{ width: `${stats.pct}%` }} />
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Filters */}
         <Card>
@@ -274,7 +244,7 @@ function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Areas — blocos empilhados (Elétrica, Térmica, ETA) */}
+        {/* Areas — blocos empilhados (Elétrica, Térmica, ETA) — destaque principal */}
         <div className="space-y-6">
           {visibleAreas.map((a) => (
             <section key={a} aria-label={AREA_LABEL[a]} className="space-y-3">
@@ -299,7 +269,7 @@ function Dashboard() {
                       <TaskCard
                         task={task}
                         isHerdada={herdada}
-                        canEdit={isAdmin}
+                        canEdit={canManage}
                         canChangeStatus={canChangeStatus(task)}
                         isVencidaVisual={
                           isAfterPrazo && task.task_date === todayISO() &&
@@ -316,6 +286,30 @@ function Dashboard() {
             </section>
           ))}
         </div>
+
+        {/* Resumo do dia — discreto, ao final */}
+        <section className="pt-6 mt-4 border-t space-y-3">
+          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Resumo do dia</h3>
+          <div className="flex flex-wrap items-center gap-3 text-sm">
+            <div className={`h-9 w-9 rounded-full ${semaClass} flex items-center justify-center text-xs font-semibold`}>
+              {stats.pct}%
+            </div>
+            <div className="flex-1 min-w-[160px] max-w-xs h-2 bg-muted rounded-full overflow-hidden">
+              <div className={`h-full ${semaClass}`} style={{ width: `${stats.pct}%` }} />
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {sema === "success" ? "100% concluído" : sema === "warning" ? "Entre 80% e 99%" : "Abaixo de 80%"}
+            </span>
+          </div>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2 text-xs">
+            <MiniStat label="Total" value={stats.total} />
+            <MiniStat label="Pendentes" value={stats.pendentes} />
+            <MiniStat label="Em andamento" value={stats.emAndamento} />
+            <MiniStat label="Concluídas" value={stats.concluidas} />
+            <MiniStat label="Não concluídas" value={stats.naoConcluidas} />
+            <MiniStat label="Vencidas" value={stats.vencidas} />
+          </div>
+        </section>
       </main>
 
       <ObservacaoDialog
