@@ -42,7 +42,7 @@ export function TaskRow({
   const rowClasses = [
     "flex items-center gap-3 px-3 py-2 border-b last:border-b-0 transition-colors",
     isConcluida ? "bg-success/10 text-success" :
-    isNaoConcluida ? "bg-warning/10" :
+    isNaoConcluida ? "bg-destructive/10 text-destructive" :
     isVencida ? "bg-destructive/10" :
     isEmAndamento ? "bg-info/5" :
     "hover:bg-muted/40",
