@@ -69,24 +69,12 @@ function Dashboard() {
     return date === today && (now.getHours() > 19 || (now.getHours() === 19 && now.getMinutes() >= 30));
   }, [date]);
 
-  function applyFilters(list: Task[]) {
-    return list.filter((t) => {
-      if (filters.status !== "all" && t.status !== filters.status) return false;
-      if (filters.prioridade !== "all" && t.prioridade !== filters.prioridade) return false;
-      if (filters.impacto !== "all" && t.impacto !== filters.impacto) return false;
-      if (filters.responsavel && !t.responsavel.toLowerCase().includes(filters.responsavel.toLowerCase())) return false;
-      return true;
-    });
-  }
-
   const allVisible = useMemo(() => {
-    const withHerd = [
+    return [
       ...own.map((t) => ({ task: t, herdada: false })),
       ...herdadas.map((t) => ({ task: t, herdada: true })),
     ];
-    return withHerd.filter(({ task }) => applyFilters([task]).length > 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [own, herdadas, filters]);
+  }, [own, herdadas]);
 
   const byArea: Record<Area, typeof allVisible> = { termica: [], eletrica: [], eta: [] };
   for (const item of allVisible) byArea[item.task.area].push(item);
