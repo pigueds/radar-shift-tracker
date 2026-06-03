@@ -14,16 +14,182 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          area_padrao: Database["public"]["Enums"]["task_area"] | null
+          created_at: string
+          display_name: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          area_padrao?: Database["public"]["Enums"]["task_area"] | null
+          created_at?: string
+          display_name?: string
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          area_padrao?: Database["public"]["Enums"]["task_area"] | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      task_audit: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json
+          id: string
+          task_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json
+          id?: string
+          task_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json
+          id?: string
+          task_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_audit_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          area: Database["public"]["Enums"]["task_area"]
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          impacto: Database["public"]["Enums"]["task_impact"]
+          inherited_from: string | null
+          observacao: string
+          original_date: string | null
+          prioridade: Database["public"]["Enums"]["task_priority"]
+          responsavel: string
+          status: Database["public"]["Enums"]["task_status"]
+          task_date: string
+          turno: Database["public"]["Enums"]["task_turno"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          area: Database["public"]["Enums"]["task_area"]
+          created_at?: string
+          created_by?: string | null
+          description: string
+          id?: string
+          impacto?: Database["public"]["Enums"]["task_impact"]
+          inherited_from?: string | null
+          observacao?: string
+          original_date?: string | null
+          prioridade?: Database["public"]["Enums"]["task_priority"]
+          responsavel?: string
+          status?: Database["public"]["Enums"]["task_status"]
+          task_date: string
+          turno?: Database["public"]["Enums"]["task_turno"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          area?: Database["public"]["Enums"]["task_area"]
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          impacto?: Database["public"]["Enums"]["task_impact"]
+          inherited_from?: string | null
+          observacao?: string
+          original_date?: string | null
+          prioridade?: Database["public"]["Enums"]["task_priority"]
+          responsavel?: string
+          status?: Database["public"]["Enums"]["task_status"]
+          task_date?: string
+          turno?: Database["public"]["Enums"]["task_turno"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_inherited_from_fkey"
+            columns: ["inherited_from"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "operador" | "gerente"
+      task_area: "termica" | "eletrica" | "eta"
+      task_impact:
+        | "seguranca"
+        | "meio_ambiente"
+        | "confiabilidade"
+        | "producao"
+        | "eficiencia_energetica"
+        | "rotina_operacional"
+      task_priority: "critica" | "alta" | "media" | "baixa"
+      task_status:
+        | "pendente"
+        | "em_andamento"
+        | "concluida"
+        | "nao_concluida"
+        | "vencida"
+      task_turno: "manha" | "tarde" | "noite" | "integral"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +316,26 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "operador", "gerente"],
+      task_area: ["termica", "eletrica", "eta"],
+      task_impact: [
+        "seguranca",
+        "meio_ambiente",
+        "confiabilidade",
+        "producao",
+        "eficiencia_energetica",
+        "rotina_operacional",
+      ],
+      task_priority: ["critica", "alta", "media", "baixa"],
+      task_status: [
+        "pendente",
+        "em_andamento",
+        "concluida",
+        "nao_concluida",
+        "vencida",
+      ],
+      task_turno: ["manha", "tarde", "noite", "integral"],
+    },
   },
 } as const
