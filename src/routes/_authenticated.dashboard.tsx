@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { format, addDays, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock, Users } from "lucide-react";
+import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock, Users, Flame, Zap, Droplet } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import {
 import {
   AREAS, AREA_LABEL, PRAZO_TURNO, semaforoColor, type Area, type Status,
 } from "@/lib/domain";
+import type { LucideIcon } from "lucide-react";
 import { type Task } from "@/components/radar/TaskCard";
 import { TaskRow } from "@/components/radar/TaskRow";
 import { TaskFormDialog } from "@/components/radar/TaskFormDialog";
@@ -30,6 +31,12 @@ const AREA_HEADER_CLASS: Record<Area, string> = {
   termica: "bg-primary/10 border-l-primary text-primary",
   eletrica: "bg-primary/10 border-l-primary text-primary",
   eta: "bg-primary/10 border-l-primary text-primary",
+};
+
+const AREA_ICON: Record<Area, LucideIcon> = {
+  termica: Flame,
+  eletrica: Zap,
+  eta: Droplet,
 };
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -227,6 +234,10 @@ function Dashboard() {
           {visibleAreas.map((a) => (
             <section key={a} aria-label={AREA_LABEL[a]} className="space-y-2">
               <div className={`flex items-center gap-3 border-l-4 rounded-md px-4 py-2.5 ${AREA_HEADER_CLASS[a]}`}>
+                {(() => {
+                  const Icon = AREA_ICON[a];
+                  return <Icon className="h-5 w-5" />;
+                })()}
                 <h2 className="text-xl font-bold tracking-tight">{AREA_LABEL[a]}</h2>
                 <span className="text-sm opacity-80">
                   ({byArea[a].length} {byArea[a].length === 1 ? "tarefa" : "tarefas"})
