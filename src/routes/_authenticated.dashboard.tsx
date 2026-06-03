@@ -234,6 +234,10 @@ function Dashboard() {
           {visibleAreas.map((a) => (
             <section key={a} aria-label={AREA_LABEL[a]} className="space-y-2">
               <div className={`flex items-center gap-3 border-l-4 rounded-md px-4 py-2.5 ${AREA_HEADER_CLASS[a]}`}>
+                {(() => {
+                  const Icon = AREA_ICON[a];
+                  return <Icon className="h-5 w-5" />;
+                })()}
                 <h2 className="text-xl font-bold tracking-tight">{AREA_LABEL[a]}</h2>
                 <span className="text-sm opacity-80">
                   ({byArea[a].length} {byArea[a].length === 1 ? "tarefa" : "tarefas"})
