@@ -34,12 +34,6 @@ function Dashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [date, setDate] = useState<string>(todayISO());
-  const [filters, setFilters] = useState({
-    status: "all" as Status | "all",
-    prioridade: "all" as string,
-    impacto: "all" as string,
-    responsavel: "",
-  });
 
   const expireFn = useServerFn(autoExpireTasks);
   const listFn = useServerFn(listTasksForDate);
