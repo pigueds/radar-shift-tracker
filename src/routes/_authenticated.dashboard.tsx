@@ -19,6 +19,7 @@ import {
 import {
   AREAS, AREA_LABEL, PRAZO_TURNO, semaforoColor, type Area, type Status,
 } from "@/lib/domain";
+import type { LucideIcon } from "lucide-react";
 import { type Task } from "@/components/radar/TaskCard";
 import { TaskRow } from "@/components/radar/TaskRow";
 import { TaskFormDialog } from "@/components/radar/TaskFormDialog";
