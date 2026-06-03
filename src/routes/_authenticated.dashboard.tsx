@@ -19,10 +19,18 @@ import {
 import {
   AREAS, AREA_LABEL, PRAZO_TURNO, semaforoColor, type Area, type Status,
 } from "@/lib/domain";
-import { TaskCard, type Task } from "@/components/radar/TaskCard";
+import { type Task } from "@/components/radar/TaskCard";
+import { TaskRow } from "@/components/radar/TaskRow";
 import { TaskFormDialog } from "@/components/radar/TaskFormDialog";
 import { ObservacaoDialog } from "@/components/radar/ObservacaoDialog";
 import { ReportButtons } from "@/components/radar/ReportButtons";
+import { ResumoDialog } from "@/components/radar/ResumoDialog";
+
+const AREA_HEADER_CLASS: Record<Area, string> = {
+  termica: "bg-destructive/15 border-l-destructive text-destructive",
+  eletrica: "bg-warning/20 border-l-warning text-warning-foreground",
+  eta: "bg-info/15 border-l-info text-info",
+};
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
