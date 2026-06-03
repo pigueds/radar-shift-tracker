@@ -339,21 +339,6 @@ function setEditTask(t: Task | null) { _setEdit?.(t); }
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useEditTask;
 
-function Indicator({ label, value, accent }: { label: string; value: number; accent?: "success" | "warning" | "destructive" | "info" }) {
-  const color =
-    accent === "success" ? "text-success" :
-    accent === "warning" ? "text-warning-foreground" :
-    accent === "destructive" ? "text-destructive" :
-    accent === "info" ? "text-info" : "text-foreground";
-  return (
-    <Card>
-      <CardContent className="p-4">
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className={`text-2xl font-semibold mt-1 ${color}`}>{value}</p>
-      </CardContent>
-    </Card>
-  );
-}
 
 function MiniStat({ label, value }: { label: string; value: number }) {
   return (
