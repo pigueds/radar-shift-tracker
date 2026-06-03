@@ -1,10 +1,10 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { format, addDays, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock } from "lucide-react";
+import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock, Users } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -173,6 +173,11 @@ function Dashboard() {
             <div className="flex items-center gap-1 px-3 py-1.5 rounded-md bg-sidebar-accent text-sidebar-accent-foreground text-xs">
               <Clock className="h-3.5 w-3.5" /> Prazo do turno: {PRAZO_TURNO}
             </div>
+            {isAdmin && (
+              <Button variant="ghost" size="sm" asChild className="text-sidebar-foreground hover:bg-sidebar-accent">
+                <Link to="/usuarios"><Users className="h-4 w-4 mr-1" />Usuários</Link>
+              </Button>
+            )}
             <Button variant="ghost" size="sm" onClick={logout} className="text-sidebar-foreground hover:bg-sidebar-accent">
               <LogOut className="h-4 w-4 mr-1" /> Sair
             </Button>
