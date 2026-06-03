@@ -136,11 +136,11 @@ export const changeStatus = createServerFn({ method: "POST" })
     if (data.status === "nao_concluida" && !(data.observacao && data.observacao.trim())) {
       throw new Error("Observação obrigatória para tarefa não concluída.");
     }
-    const patch: Record<string, unknown> = {
+    const patch = {
       status: data.status,
       updated_by: userId,
+      ...(typeof data.observacao === "string" ? { observacao: data.observacao } : {}),
     };
-    if (typeof data.observacao === "string") patch.observacao = data.observacao;
     const { error } = await supabase.from("tasks").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
