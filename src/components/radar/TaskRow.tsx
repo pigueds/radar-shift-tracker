@@ -57,7 +57,7 @@ export function TaskRow({
 
         <p className={`flex-1 text-sm leading-snug ${isConcluida ? "font-medium" : ""}`}>
           <span>{task.description}</span>
-          <span className="text-muted-foreground"> — {AREA_LABEL[task.area]} — </span>
+          <span className="text-muted-foreground"> — {task.responsavel || "—"} — </span>
           <span className={isConcluida ? "font-semibold" : ""}>
             {STATUS_LABEL[status]}
           </span>
