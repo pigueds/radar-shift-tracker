@@ -12,9 +12,6 @@ export type TaskFormValues = {
   description: string;
   area: Area;
   responsavel: string;
-  turno: Turno;
-  prioridade: Priority;
-  impacto: Impact;
   task_date: string;
 };
 
