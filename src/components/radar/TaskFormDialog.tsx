@@ -6,11 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  AREAS, AREA_LABEL, IMPACTS, IMPACT_LABEL, PRIORITIES, PRIORITY_LABEL,
-  TURNOS, TURNO_LABEL,
-  type Area, type Impact, type Priority, type Turno,
-} from "@/lib/domain";
+import { AREAS, AREA_LABEL, type Area } from "@/lib/domain";
 
 export type TaskFormValues = {
   description: string;
