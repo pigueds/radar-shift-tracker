@@ -65,6 +65,7 @@ function Dashboard() {
   const isAdmin = ctxQ.data?.roles.includes("admin") ?? false;
   const isOperador = ctxQ.data?.roles.includes("operador") ?? false;
   const isGerente = ctxQ.data?.roles.includes("gerente") ?? false;
+  const canManage = isAdmin || isGerente;
   const myArea = ctxQ.data?.profile?.area_padrao as Area | null | undefined;
 
   const own = tasksQ.data?.own ?? [];
