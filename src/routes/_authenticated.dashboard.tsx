@@ -8,10 +8,8 @@ import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock } from "lucide
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -19,8 +17,7 @@ import {
   changeStatus, getMyContext,
 } from "@/lib/tasks.functions";
 import {
-  AREAS, AREA_LABEL, PRAZO_TURNO, PRIORITIES, PRIORITY_LABEL, STATUSES, STATUS_LABEL,
-  IMPACTS, IMPACT_LABEL, semaforoColor, type Area, type Status,
+  AREAS, AREA_LABEL, PRAZO_TURNO, semaforoColor, type Area, type Status,
 } from "@/lib/domain";
 import { TaskCard, type Task } from "@/components/radar/TaskCard";
 import { TaskFormDialog } from "@/components/radar/TaskFormDialog";
@@ -37,12 +34,6 @@ function Dashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [date, setDate] = useState<string>(todayISO());
-  const [filters, setFilters] = useState({
-    status: "all" as Status | "all",
-    prioridade: "all" as string,
-    impacto: "all" as string,
-    responsavel: "",
-  });
 
   const expireFn = useServerFn(autoExpireTasks);
   const listFn = useServerFn(listTasksForDate);
@@ -78,24 +69,12 @@ function Dashboard() {
     return date === today && (now.getHours() > 19 || (now.getHours() === 19 && now.getMinutes() >= 30));
   }, [date]);
 
-  function applyFilters(list: Task[]) {
-    return list.filter((t) => {
-      if (filters.status !== "all" && t.status !== filters.status) return false;
-      if (filters.prioridade !== "all" && t.prioridade !== filters.prioridade) return false;
-      if (filters.impacto !== "all" && t.impacto !== filters.impacto) return false;
-      if (filters.responsavel && !t.responsavel.toLowerCase().includes(filters.responsavel.toLowerCase())) return false;
-      return true;
-    });
-  }
-
   const allVisible = useMemo(() => {
-    const withHerd = [
+    return [
       ...own.map((t) => ({ task: t, herdada: false })),
       ...herdadas.map((t) => ({ task: t, herdada: true })),
     ];
-    return withHerd.filter(({ task }) => applyFilters([task]).length > 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [own, herdadas, filters]);
+  }, [own, herdadas]);
 
   const byArea: Record<Area, typeof allVisible> = { termica: [], eletrica: [], eta: [] };
   for (const item of allVisible) byArea[item.task.area].push(item);
@@ -228,21 +207,6 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Filters */}
-        <Card>
-          <CardContent className="p-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-            <FilterSelect label="Status" value={filters.status} onChange={(v) => setFilters((f) => ({ ...f, status: v as Status | "all" }))}
-              options={[["all", "Todos"], ...STATUSES.map((s) => [s, STATUS_LABEL[s]] as [string, string])]} />
-            <FilterSelect label="Prioridade" value={filters.prioridade} onChange={(v) => setFilters((f) => ({ ...f, prioridade: v }))}
-              options={[["all", "Todas"], ...PRIORITIES.map((p) => [p, PRIORITY_LABEL[p]] as [string, string])]} />
-            <FilterSelect label="Impacto" value={filters.impacto} onChange={(v) => setFilters((f) => ({ ...f, impacto: v }))}
-              options={[["all", "Todos"], ...IMPACTS.map((i) => [i, IMPACT_LABEL[i]] as [string, string])]} />
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-muted-foreground">Responsável</label>
-              <Input value={filters.responsavel} onChange={(e) => setFilters((f) => ({ ...f, responsavel: e.target.value }))} placeholder="Buscar..." />
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Areas — blocos empilhados (Elétrica, Térmica, ETA) — destaque principal */}
         <div className="space-y-6">
@@ -257,7 +221,7 @@ function Dashboard() {
               </div>
               {byArea[a].length === 0 ? (
                 <div className="text-center text-sm text-muted-foreground py-8 border rounded-lg border-dashed">
-                  Nenhuma tarefa nesta área para os filtros atuais.
+                  Nenhuma tarefa nesta área.
                 </div>
               ) : (
                 <ol className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 list-none">
@@ -375,37 +339,6 @@ function setEditTask(t: Task | null) { _setEdit?.(t); }
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useEditTask;
 
-function Indicator({ label, value, accent }: { label: string; value: number; accent?: "success" | "warning" | "destructive" | "info" }) {
-  const color =
-    accent === "success" ? "text-success" :
-    accent === "warning" ? "text-warning-foreground" :
-    accent === "destructive" ? "text-destructive" :
-    accent === "info" ? "text-info" : "text-foreground";
-  return (
-    <Card>
-      <CardContent className="p-4">
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className={`text-2xl font-semibold mt-1 ${color}`}>{value}</p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function FilterSelect({ label, value, onChange, options }: {
-  label: string; value: string; onChange: (v: string) => void; options: Array<[string, string]>;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <label className="text-xs font-medium text-muted-foreground">{label}</label>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger><SelectValue /></SelectTrigger>
-        <SelectContent>
-          {options.map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
-        </SelectContent>
-      </Select>
-    </div>
-  );
-}
 
 function MiniStat({ label, value }: { label: string; value: number }) {
   return (
