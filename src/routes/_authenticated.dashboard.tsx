@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { format, addDays, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock, Users } from "lucide-react";
+import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock, Users, Flame, Zap, Droplet } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
