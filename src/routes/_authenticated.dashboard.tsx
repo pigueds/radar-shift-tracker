@@ -308,9 +308,6 @@ function Dashboard() {
             description: editTask.description,
             area: editTask.area,
             responsavel: editTask.responsavel,
-            turno: editTask.turno,
-            prioridade: editTask.prioridade,
-            impacto: editTask.impacto,
             task_date: editTask.task_date,
           }}
           onSubmit={async (v) => {
