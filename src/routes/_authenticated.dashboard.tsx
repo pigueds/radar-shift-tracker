@@ -9,9 +9,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -19,8 +17,7 @@ import {
   changeStatus, getMyContext,
 } from "@/lib/tasks.functions";
 import {
-  AREAS, AREA_LABEL, PRAZO_TURNO, PRIORITIES, PRIORITY_LABEL, STATUSES, STATUS_LABEL,
-  IMPACTS, IMPACT_LABEL, semaforoColor, type Area, type Status,
+  AREAS, AREA_LABEL, PRAZO_TURNO, semaforoColor, type Area, type Status,
 } from "@/lib/domain";
 import { TaskCard, type Task } from "@/components/radar/TaskCard";
 import { TaskFormDialog } from "@/components/radar/TaskFormDialog";
