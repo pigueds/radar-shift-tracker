@@ -273,44 +273,48 @@ function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Areas */}
-        <Tabs defaultValue={visibleAreas[0]}>
-          <TabsList>
-            {visibleAreas.map((a) => (
-              <TabsTrigger key={a} value={a}>
-                {AREA_LABEL[a]} <span className="ml-1.5 text-xs opacity-70">({byArea[a].length})</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        {/* Areas — blocos empilhados (Elétrica, Térmica, ETA) */}
+        <div className="space-y-6">
           {visibleAreas.map((a) => (
-            <TabsContent key={a} value={a} className="mt-4">
+            <section key={a} aria-label={AREA_LABEL[a]} className="space-y-3">
+              <div className="flex items-center gap-3 border-b pb-2">
+                <div className="h-8 w-1.5 rounded-full bg-primary" aria-hidden />
+                <h2 className="text-xl font-bold tracking-tight">{AREA_LABEL[a]}</h2>
+                <span className="text-sm text-muted-foreground">
+                  ({byArea[a].length} {byArea[a].length === 1 ? "tarefa" : "tarefas"})
+                </span>
+              </div>
               {byArea[a].length === 0 ? (
-                <div className="text-center text-sm text-muted-foreground py-12 border rounded-lg border-dashed">
+                <div className="text-center text-sm text-muted-foreground py-8 border rounded-lg border-dashed">
                   Nenhuma tarefa nesta área para os filtros atuais.
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                  {byArea[a].map(({ task, herdada }) => (
-                    <TaskCard
-                      key={task.id}
-                      task={task}
-                      isHerdada={herdada}
-                      canEdit={isAdmin}
-                      canChangeStatus={canChangeStatus(task)}
-                      isVencidaVisual={
-                        isAfterPrazo && task.task_date === todayISO() &&
-                        (task.status === "pendente" || task.status === "em_andamento")
-                      }
-                      onChangeStatus={(s) => onChangeStatus(task, s)}
-                      onEdit={() => openEditDialog(task)}
-                      onDelete={() => { if (confirm("Excluir esta tarefa?")) deleteMut.mutate(task.id); }}
-                    />
+                <ol className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 list-none">
+                  {byArea[a].map(({ task, herdada }, idx) => (
+                    <li key={task.id} className="relative">
+                      <span className="absolute -left-1 -top-1 z-10 h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shadow">
+                        {idx + 1}
+                      </span>
+                      <TaskCard
+                        task={task}
+                        isHerdada={herdada}
+                        canEdit={isAdmin}
+                        canChangeStatus={canChangeStatus(task)}
+                        isVencidaVisual={
+                          isAfterPrazo && task.task_date === todayISO() &&
+                          (task.status === "pendente" || task.status === "em_andamento")
+                        }
+                        onChangeStatus={(s) => onChangeStatus(task, s)}
+                        onEdit={() => openEditDialog(task)}
+                        onDelete={() => { if (confirm("Excluir esta tarefa?")) deleteMut.mutate(task.id); }}
+                      />
+                    </li>
                   ))}
-                </div>
+                </ol>
               )}
-            </TabsContent>
+            </section>
           ))}
-        </Tabs>
+        </div>
       </main>
 
       <ObservacaoDialog
