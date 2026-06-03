@@ -355,22 +355,6 @@ function Indicator({ label, value, accent }: { label: string; value: number; acc
   );
 }
 
-function FilterSelect({ label, value, onChange, options }: {
-  label: string; value: string; onChange: (v: string) => void; options: Array<[string, string]>;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <label className="text-xs font-medium text-muted-foreground">{label}</label>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger><SelectValue /></SelectTrigger>
-        <SelectContent>
-          {options.map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
-        </SelectContent>
-      </Select>
-    </div>
-  );
-}
-
 function MiniStat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-md border bg-muted/30 px-2 py-1.5 text-center">
