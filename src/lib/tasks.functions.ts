@@ -144,6 +144,51 @@ export const changeStatus = createServerFn({ method: "POST" })
     const { error } = await supabase.from("tasks").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
+});
+
+export const addUserRole = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ userId: z.string().uuid(), role: z.enum(ROLES) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase, userId: callerId } = context;
+    const { data: callerRoles } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", callerId);
+    if (!callerRoles?.some((r) => r.role === "admin")) {
+      throw new Error("Apenas administradores podem gerenciar papéis.");
+    }
+    const { error } = await supabase
+      .from("user_roles")
+      .insert({ user_id: data.userId, role: data.role })
+      .select();
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const removeUserRole = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) =>
+    z.object({ userId: z.string().uuid(), role: z.enum(ROLES) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabase, userId: callerId } = context;
+    const { data: callerRoles } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", callerId);
+    if (!callerRoles?.some((r) => r.role === "admin")) {
+      throw new Error("Apenas administradores podem gerenciar papéis.");
+    }
+    const { error } = await supabase
+      .from("user_roles")
+      .delete()
+      .eq("user_id", data.userId)
+      .eq("role", data.role);
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
 
 export const listProfiles = createServerFn({ method: "GET" })
