@@ -221,7 +221,7 @@ function Dashboard() {
               </div>
               {byArea[a].length === 0 ? (
                 <div className="text-center text-sm text-muted-foreground py-8 border rounded-lg border-dashed">
-                  Nenhuma tarefa nesta área para os filtros atuais.
+                  Nenhuma tarefa nesta área.
                 </div>
               ) : (
                 <ol className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 list-none">
