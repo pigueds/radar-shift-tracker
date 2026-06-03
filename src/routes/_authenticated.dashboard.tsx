@@ -33,6 +33,12 @@ const AREA_HEADER_CLASS: Record<Area, string> = {
   eta: "bg-primary/10 border-l-primary text-primary",
 };
 
+const AREA_ICON: Record<Area, LucideIcon> = {
+  termica: Flame,
+  eletrica: Zap,
+  eta: Droplet,
+};
+
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
