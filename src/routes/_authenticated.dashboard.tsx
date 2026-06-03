@@ -8,7 +8,7 @@ import { Activity, ChevronLeft, ChevronRight, LogOut, Plus, Clock } from "lucide
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 
 import { supabase } from "@/integrations/supabase/client";
