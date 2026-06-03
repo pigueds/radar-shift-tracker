@@ -125,12 +125,12 @@ function Dashboard() {
   const invalidate = () => qc.invalidateQueries({ queryKey: ["tasks", date] });
 
   const createMut = useMutation({
-    mutationFn: (v: Parameters<typeof createFn>[0]["data"]) => createFn({ data: v }),
+    mutationFn: (v: any) => createFn({ data: v }),
     onSuccess: () => { toast.success("Tarefa criada"); invalidate(); },
     onError: (e: Error) => toast.error(e.message),
   });
   const updateMut = useMutation({
-    mutationFn: (v: Parameters<typeof updateFn>[0]["data"]) => updateFn({ data: v }),
+    mutationFn: (v: any) => updateFn({ data: v }),
     onSuccess: () => { toast.success("Tarefa atualizada"); invalidate(); },
     onError: (e: Error) => toast.error(e.message),
   });
