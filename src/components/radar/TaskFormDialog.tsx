@@ -21,14 +21,24 @@ export function TaskFormDialog({
   defaultDate,
   onSubmit,
   title = "Nova tarefa",
+  open: openProp,
+  onOpenChange,
 }: {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   initial?: Partial<TaskFormValues>;
   defaultDate: string;
   onSubmit: (v: TaskFormValues) => Promise<void>;
   title?: string;
+  open?: boolean;
+  onOpenChange?: (o: boolean) => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = openProp !== undefined;
+  const open = isControlled ? openProp : internalOpen;
+  const setOpen = (o: boolean) => {
+    if (!isControlled) setInternalOpen(o);
+    onOpenChange?.(o);
+  };
   const { register, handleSubmit, reset, setValue, watch } = useForm<TaskFormValues>({
     defaultValues: {
       description: initial?.description ?? "",
@@ -47,7 +57,7 @@ export function TaskFormDialog({
   const v = watch();
   return (
     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset(); }}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent className="max-w-lg">
         <DialogHeader><DialogTitle>{title}</DialogTitle></DialogHeader>
         <form onSubmit={submit} className="space-y-4">
