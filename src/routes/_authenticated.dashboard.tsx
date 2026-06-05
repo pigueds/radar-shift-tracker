@@ -312,7 +312,8 @@ function Dashboard() {
       {editTask && (
         <TaskFormDialog
           key={editTask.id}
-          trigger={<span className="hidden" />}
+          open={true}
+          onOpenChange={(o) => { if (!o) setEditTask(null); }}
           title="Editar tarefa"
           defaultDate={date}
           initial={{
@@ -333,30 +334,9 @@ function Dashboard() {
 
   function openEditDialog(t: Task) {
     setEditTask(t);
-    // The dialog auto-opens because it's mounted with a fresh key; trigger click is hidden.
-    // Simpler approach: replace with controlled dialog. For brevity here we rely on rerender + manual open below.
   }
 }
 
-// Controlled edit task state hoisted via hook in Dashboard component scope:
-// (kept here for simplicity at the bottom — needs to be inside component)
-// Re-declare via component-local module replacement below:
-
-// To keep edit flow simple, use a top-level useState by extracting:
-import { useState as useStateBase } from "react";
-let _setEdit: ((t: Task | null) => void) | null = null;
-let editTask: Task | null = null;
-const useEditTask = () => {
-  const [t, setT] = useStateBase<Task | null>(null);
-  editTask = t;
-  _setEdit = setT;
-  return setT;
-};
-function setEditTask(t: Task | null) { _setEdit?.(t); }
-
-// Initialize hook at top of Dashboard via small wrapper
-// eslint-disable-next-line react-hooks/rules-of-hooks
-useEditTask;
 
 
 function MiniStat({ label, value }: { label: string; value: number }) {
