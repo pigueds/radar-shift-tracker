@@ -49,6 +49,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [date, setDate] = useState<string>(todayISO());
+  const [editTask, setEditTask] = useState<Task | null>(null);
 
   const expireFn = useServerFn(autoExpireTasks);
   const listFn = useServerFn(listTasksForDate);
