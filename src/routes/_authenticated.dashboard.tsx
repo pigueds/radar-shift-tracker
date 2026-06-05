@@ -24,7 +24,7 @@ import { type Task } from "@/components/radar/TaskCard";
 import { TaskRow } from "@/components/radar/TaskRow";
 import { TaskFormDialog } from "@/components/radar/TaskFormDialog";
 import { ObservacaoDialog } from "@/components/radar/ObservacaoDialog";
-import { ReportButtons } from "@/components/radar/ReportButtons";
+
 import { ResumoDialog } from "@/components/radar/ResumoDialog";
 
 const AREA_HEADER_CLASS: Record<Area, string> = {
