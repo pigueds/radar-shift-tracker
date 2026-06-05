@@ -217,7 +217,6 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <ResumoDialog date={date} tasks={[...own, ...herdadas]} isAfterPrazo={isAfterPrazo} />
-            <ReportButtons date={date} tasks={own} herdadas={herdadas} stats={stats} />
             {canManage && (
               <TaskFormDialog
                 trigger={<Button><Plus className="h-4 w-4 mr-1" />Nova tarefa</Button>}
